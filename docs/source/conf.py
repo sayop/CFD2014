@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # CFD2014 documentation build configuration file, created by
-# sphinx-quickstart on Tue Feb  4 16:51:54 2014.
+# sphinx-quickstart on Tue Feb  4 18:11:48 2014.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -34,7 +34,6 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
-    'sphinx.ext.pngmath',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
 ]
