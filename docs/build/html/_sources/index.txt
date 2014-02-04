@@ -6,12 +6,20 @@
 Welcome to CFD2014's documentation!
 ===================================
 
+This documentation pages are made for CFD class at Geogia Tech in 2014 Spring.
+Author: Sayop Kim
+Contact: sayopkim@gatech.edu
+
 Contents:
+=========
 
 .. toctree::
    :maxdepth: 2
 
-
+   intro/index
+   assignments/index
+   projects/index
+   references/index
 
 Indices and tables
 ==================
