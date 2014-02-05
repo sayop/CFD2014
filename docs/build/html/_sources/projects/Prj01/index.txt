@@ -1,6 +1,8 @@
 Computer Project #1
 ===================
 
+The current computer project is assigned as shown in the pdf linked :download:`here <./resources/CP_1.pdf>`.
+
 1. Project description
 ----------------------
 
@@ -12,4 +14,10 @@ In this exercise you will generate an inviscid, 2-D computational grid around a 
 where the ":math:`+`" sign is used for the upper half of the airfoil, the ":math:`-`" sign is used for the lower half and :math:`x_{int} = 1.008930411365`. Note that in the expression above :math:`x`, :math:`y`, and :math:`t` represent values which have been normalized by the airfoil by the airf
 oil chord.
 
+A sketch of the computational domain is shown below:
+
+.. image:: ./images/CP1_compute_domain.png
+   :scale: 60%
+
+Each grid point can be described by :math:`(x,y)` location or :math:`(i,j)` location where :math:`i` is the index in the :math:`\xi` direction and the :math:`j` index is in the :math:`\eta` direction. The grid should have imax=41 points in the :math:`\xi` direction and jmax=19 points in the :math:`\eta` direction. The coordinates of points A-F shown in the figure are given in the following table:
 
