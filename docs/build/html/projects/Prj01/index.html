@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -26,7 +28,7 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="CFD2014 0.0.1 documentation" href="../../index.html" />
     <link rel="up" title="Computer Projects" href="../index.html" />
-    <link rel="next" title="Computer Project #2" href="../Prj02/index.html" />
+    <link rel="next" title="Project description" href="PrjDescription/contents.html" />
     <link rel="prev" title="Computer Projects" href="../index.html" /> 
   </head>
   <body>
@@ -37,7 +39,7 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../Prj02/index.html" title="Computer Project #2"
+          <a href="PrjDescription/contents.html" title="Project description"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../index.html" title="Computer Projects"
@@ -54,17 +56,14 @@
             
   <div class="section" id="computer-project-1">
 <h1>Computer Project #1<a class="headerlink" href="#computer-project-1" title="Permalink to this headline">¶</a></h1>
-<p>The current computer project is assigned as shown in the pdf linked <a class="reference download internal" href="../../_downloads/CP_1.pdf"><tt class="xref download docutils literal"><span class="pre">here</span></tt></a>.</p>
-<div class="section" id="project-description">
-<h2>1. Project description<a class="headerlink" href="#project-description" title="Permalink to this headline">¶</a></h2>
-<p>In this exercise you will generate an inviscid, 2-D computational grid around a modified NACA 00xx series airfoil in a channel. The thickness distribution of a modified NACA 00xx series airfoil is given by:</p>
-<div class="math">
-\[y(x) = \pm 5t [0.2969 \sqrt{x_{int}x} - 0.126 x_{int} x - 0.3516 (x_{int}x)^{2} + 0.2843(x_{int}x)^{3} - 0.1015 (x_{int}x)^{4}]\]</div>
-<p>where the &#8220;<span class="math">\(+\)</span>&#8221; sign is used for the upper half of the airfoil, the &#8220;<span class="math">\(-\)</span>&#8221; sign is used for the lower half and <span class="math">\(x_{int} = 1.008930411365\)</span>. Note that in the expression above <span class="math">\(x\)</span>, <span class="math">\(y\)</span>, and <span class="math">\(t\)</span> represent values which have been normalized by the airfoil by the airf
-oil chord.</p>
-<p>A sketch of the computational domain is shown below:</p>
-<a class="reference internal image-reference" href="../../_images/CP1_compute_domain.png"><img alt="../../_images/CP1_compute_domain.png" src="../../_images/CP1_compute_domain.png" style="width: 496.2px; height: 271.8px;" /></a>
-<p>Each grid point can be described by <span class="math">\((x,y)\)</span> location or <span class="math">\((i,j)\)</span> location where <span class="math">\(i\)</span> is the index in the <span class="math">\(\xi\)</span> direction and the <span class="math">\(j\)</span> index is in the <span class="math">\(\eta\)</span> direction. The grid should have imax=41 points in the <span class="math">\(\xi\)</span> direction and jmax=19 points in the <span class="math">\(\eta\)</span> direction. The coordinates of points A-F shown in the figure are given in the following table:</p>
+<p>The current computer project is assigned as shown in the pdf linked <tt class="xref download docutils literal"><span class="pre">here</span></tt>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="PrjDescription/contents.html">Project description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CodeDevel/contents.html">Code development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Results/contents.html">Results summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Discussions/contents.html">Discussions</a></li>
+</ul>
 </div>
 </div>
 
@@ -74,20 +73,12 @@ oil chord.</p>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Computer Project #1</a><ul>
-<li><a class="reference internal" href="#project-description">1. Project description</a></li>
-</ul>
-</li>
-</ul>
-
   <h4>Previous topic</h4>
   <p class="topless"><a href="../index.html"
                         title="previous chapter">Computer Projects</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../Prj02/index.html"
-                        title="next chapter">Computer Project #2</a></p>
+  <p class="topless"><a href="PrjDescription/contents.html"
+                        title="next chapter">Project description</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../../_sources/projects/Prj01/index.txt"
@@ -117,7 +108,7 @@ oil chord.</p>
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../Prj02/index.html" title="Computer Project #2"
+          <a href="PrjDescription/contents.html" title="Project description"
              >next</a> |</li>
         <li class="right" >
           <a href="../index.html" title="Computer Projects"
@@ -128,7 +119,7 @@ oil chord.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2014, Sayop Kim.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>
