@@ -30,19 +30,22 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /usr/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E remove -f
+RM = /usr/local/bin/cmake -E remove -f
+
+# Escaping for special characters.
+EQUALS = =
 
 # The program to use to edit the cache.
-CMAKE_EDIT_COMMAND = /usr/bin/ccmake
+CMAKE_EDIT_COMMAND = /usr/local/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/src
+CMAKE_SOURCE_DIR = /data/ksayop/GitHub.Clone/CFD2014/Proj01/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/bin/build
+CMAKE_BINARY_DIR = /data/ksayop/GitHub.Clone/CFD2014/Proj01/bin/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -50,7 +53,7 @@ CMAKE_BINARY_DIR = /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/bin/build
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -60,7 +63,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -69,14 +72,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/bin/build && $(CMAKE_COMMAND) -E cmake_progress_start /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/bin/build/CMakeFiles /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/bin/build/main/CMakeFiles/progress.marks
-	cd /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/bin/build && $(MAKE) -f CMakeFiles/Makefile2 main/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/bin/build/CMakeFiles 0
+	cd /data/ksayop/GitHub.Clone/CFD2014/Proj01/bin/build && $(CMAKE_COMMAND) -E cmake_progress_start /data/ksayop/GitHub.Clone/CFD2014/Proj01/bin/build/CMakeFiles /data/ksayop/GitHub.Clone/CFD2014/Proj01/bin/build/main/CMakeFiles/progress.marks
+	cd /data/ksayop/GitHub.Clone/CFD2014/Proj01/bin/build && $(MAKE) -f CMakeFiles/Makefile2 main/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /data/ksayop/GitHub.Clone/CFD2014/Proj01/bin/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/bin/build && $(MAKE) -f CMakeFiles/Makefile2 main/clean
+	cd /data/ksayop/GitHub.Clone/CFD2014/Proj01/bin/build && $(MAKE) -f CMakeFiles/Makefile2 main/clean
 .PHONY : clean
 
 # The main clean target
@@ -85,17 +88,17 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/bin/build && $(MAKE) -f CMakeFiles/Makefile2 main/preinstall
+	cd /data/ksayop/GitHub.Clone/CFD2014/Proj01/bin/build && $(MAKE) -f CMakeFiles/Makefile2 main/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/bin/build && $(MAKE) -f CMakeFiles/Makefile2 main/preinstall
+	cd /data/ksayop/GitHub.Clone/CFD2014/Proj01/bin/build && $(MAKE) -f CMakeFiles/Makefile2 main/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/bin/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /data/ksayop/GitHub.Clone/CFD2014/Proj01/bin/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Help Target
@@ -117,6 +120,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/bin/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /data/ksayop/GitHub.Clone/CFD2014/Proj01/bin/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

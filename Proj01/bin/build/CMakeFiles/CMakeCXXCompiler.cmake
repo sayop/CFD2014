@@ -1,6 +1,7 @@
 SET(CMAKE_CXX_COMPILER "/usr/bin/c++")
 SET(CMAKE_CXX_COMPILER_ARG1 "")
 SET(CMAKE_CXX_COMPILER_ID "GNU")
+SET(CMAKE_CXX_COMPILER_VERSION "4.6.3")
 SET(CMAKE_CXX_PLATFORM_ID "Linux")
 
 SET(CMAKE_AR "/usr/bin/ar")
@@ -47,4 +48,7 @@ SET(CMAKE_CXX_HAS_ISYSROOT "")
 
 
 SET(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES "stdc++;m;c")
-SET(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "/usr/lib/gcc/x86_64-linux-gnu/4.6;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib")
+SET(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "/usr/lib/gcc/x86_64-linux-gnu/4.6;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib;/opt/intel/composer_xe_2011_sp1.11.339/compiler/lib/intel64;/opt/intel/composer_xe_2011_sp1.11.339/ipp/lib/intel64;/opt/intel/composer_xe_2011_sp1.11.339/mkl/lib/intel64;/opt/intel/composer_xe_2011_sp1.11.339/tbb/lib/intel64/cc4.1.0_libc2.4_kernel2.6.16.21")
+
+
+

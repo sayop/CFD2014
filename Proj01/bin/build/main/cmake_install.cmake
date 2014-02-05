@@ -1,4 +1,4 @@
-# Install script for directory: /data/sayop/Devel/GitHub.Clones/CFD2014/Proj01/src/main
+# Install script for directory: /data/ksayop/GitHub.Clone/CFD2014/Proj01/src/main
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
