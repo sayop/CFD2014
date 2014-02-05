@@ -5,7 +5,7 @@ MODULE SimulationSetup_m
    USE Parameters_m, ONLY: wp
    IMPLICIT NONE
 
-   PUBLIC :: InitializeCommunication, TESTstateVar, UniformSpacing
+   PUBLIC :: InitializeCommunication, UniformSpacing
 
 CONTAINS
 
@@ -19,23 +19,6 @@ CONTAINS
       WRITE(*,'(a)') "CFD code Version: ", CODE_VER_STRING
    END SUBROUTINE InitializeCommunication
 
-
-!-----------------------------------------------------------------------------!
-   SUBROUTINE TESTstateVar()
-!-----------------------------------------------------------------------------!
-      USE SimulationVars_m, ONLY: imax, jmax, kmax, &
-                                  xp, VarIJK
-      IMPLICIT NONE
-      INTEGER :: i, j, k
-
-      DO i = 1, imax
-         DO j = 1, jmax
-            DO k = 1, kmax
-               VarIJK(i,j,k) = REAL(i * j * k)
-            ENDDO
-         ENDDO
-      ENDDO
-   END SUBROUTINE
 
 !-----------------------------------------------------------------------------!
    FUNCTION UniformSpacing(xmin,xmax,indx,indxMax) RESULT(outcome)

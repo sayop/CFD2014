@@ -6,7 +6,9 @@ MODULE GridTransform_m
    USE io_m, ONLY: iControl
    USE SimulationVars_m, ONLY: nmax, error, ErrMax
    USE GridTransformSetup_m, ONLY: InitializeArrays, CalculateA123, &
-                                   CalculatePiPsi, ThomasLoop
+                                   CalculatePiPsi, ThomasLoop, &
+                                   CopyFrontTOBack, CalculateGridJacobian
+   USE GridSetup_m, ONLY: GenerateInteriorPoints
    IMPLICIT NONE
 
 CONTAINS
@@ -24,6 +26,9 @@ CONTAINS
       CALL ThomasLoop
       IF (error <= ErrMax) return
    ENDDO
+   CALL CopyFrontTOBack
+   CALL GenerateInteriorPoints
+   CALL CalculateGridJacobian
 END SUBROUTINE GridTransform
 
 END MODULE

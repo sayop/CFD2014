@@ -16,9 +16,9 @@ DCsize		11
 width		0.1
 # Grid clustering
 cy		0.001
-# Iteration max
-nmax		100
+# Iteration max: If nmax == 0, elliptic grid won't be calculated
+nmax		0
 # Error Criterion
 ErrMax		0.1
 # Calculate control terms: Pi, Psi
-iControl	1
+iControl	0

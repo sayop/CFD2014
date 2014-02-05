@@ -5,7 +5,7 @@ MODULE GridSetup_m
    USE Parameters_m, ONLY: wp
    IMPLICIT NONE
 
-   PUBLIC :: InitializeGrid
+   PUBLIC :: InitializeGrid, GenerateInteriorPoints
 
 CONTAINS
 !-----------------------------------------------------------------------------!
@@ -22,6 +22,7 @@ CONTAINS
    CALL CreateBottomEdge
    CALL SetEdgePnts
    CALL GridPntsAlgbra
+   CALL GenerateInteriorPoints
 
    END SUBROUTINE
 
@@ -33,15 +34,15 @@ CONTAINS
       ! kmax: number of grid points in k-direction
       ! xp(3,imax,jmax,kmax): curvilinear coordinates in physical space
       USE SimulationVars_m, ONLY: imax, jmax, kmax, &
-                                  xp, VarIJK
+                                  xp, inverseJacobian
       IMPLICIT NONE
 
       WRITE(*,'(a)') ""
       WRITE(*,'(a)') "Initializing data arrays..."
       ALLOCATE(xp(3,imax,jmax,kmax))
-      ALLOCATE(VarIJK(imax,jmax,kmax))
-      xp = 0.0
-      VarIJK = 0.0
+      ALLOCATE(inverseJacobian(imax,jmax,kmax))
+      xp = 0.0_wp
+      inverseJacobian = 0.0_wp
    END SUBROUTINE
 
 
@@ -410,19 +411,31 @@ CONTAINS
             xp(3,i,j,kmax) = UniformSpacing(xp(3,i,1,kmax), xp(3,i,jmax,kmax), j, jmax)
          ENDDO
       ENDDO
+   END SUBROUTINE
+
+
+!-----------------------------------------------------------------------------!
+   SUBROUTINE GenerateInteriorPoints()
+!-----------------------------------------------------------------------------!
+      USE SimulationVars_m, ONLY: imax, jmax, kmax, &
+                                  xp, xblkV
+      USE SimulationSetup_m, ONLY: UniformSpacing
+      IMPLICIT NONE
+      INTEGER :: i, j, k
+
       WRITE(*,'(a)') ""
-      WRITE(*,'(a)') "Writing interior grid points inside block..."
+      WRITE(*,'(a)') "Writing interior grid points..."
       DO i = 2, imax -1
-         DO j = 2, jmax - 1
-            DO k = 2, kmax - 1
-               xp(1,i,j,k) = UniformSpacing(xp(1,i,j,1), xp(1,i,j,kmax), k, kmax)
-               xp(2,i,j,k) = UniformSpacing(xp(2,i,j,1), xp(2,i,j,kmax), k, kmax)
-               xp(3,i,j,k) = GridStretching(xp(3,i,j,1), xp(3,i,j,kmax), k, kmax)
+         DO k = 2, kmax - 1
+            DO j = 2, jmax - 1
+               xp(1,i,j,k) = UniformSpacing(xp(1,i,1,k), xp(1,i,jmax,k), j, jmax)
+               xp(2,i,j,k) = UniformSpacing(xp(2,i,1,k), xp(2,i,jmax,k), j, jmax)
+               xp(3,i,j,k) = GridStretching(xp(3,i,1,k), xp(3,i,jmax,k), j, jmax)
             ENDDO
          ENDDO
       ENDDO
-   END SUBROUTINE
 
+   END SUBROUTINE
 
 !-----------------------------------------------------------------------------!
    FUNCTION GridStretching(xmin,xmax,indx,indxMax) RESULT(outcome)

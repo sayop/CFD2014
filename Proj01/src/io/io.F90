@@ -111,8 +111,7 @@ CONTAINS
 ! Write Tecplot file
 !-----------------------------------------------------------------------------!
    USE SimulationVars_m, ONLY: imax, jmax, kmax,&
-                               xp, VarIJK
-   USE GridTransformSetup_m, ONLY: Psi, Pi
+                               xp, inverseJacobian
    IMPLICIT NONE
    CHARACTER(LEN=filenameLength), INTENT(IN) :: fileName
    CHARACTER(LEN=*), INTENT(IN) :: varList
@@ -129,7 +128,8 @@ CONTAINS
    DO k = 1, kmax
       DO j = 1, jmax
          DO i = 1, imax
-            WRITE(IOunit,'(5g15.6)') xp(1,i,j,k), xp(2,i,j,k), xp(3,i,j,k), Pi(i,j,k), Psi(i,j,k)
+            WRITE(IOunit,'(4g15.6)') xp(1,i,j,k), xp(2,i,j,k), xp(3,i,j,k), &
+                                     inverseJacobian(i,j,k)
          ENDDO
       ENDDO
    ENDDO

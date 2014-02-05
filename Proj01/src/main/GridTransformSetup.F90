@@ -227,6 +227,7 @@ CONTAINS
    ENDDO
    END SUBROUTINE ThomasLoop
 
+
 !-----------------------------------------------------------------------------!
    SUBROUTINE SY(IL,IU,BB,DD,AA,CC)
 !-----------------------------------------------------------------------------!
@@ -252,5 +253,111 @@ CONTAINS
       CC(J) = (CC(J) - AA(J)*CC(J+1))/DD(J)
    ENDDO
    END SUBROUTINE SY
+
+
+!-----------------------------------------------------------------------------!
+   SUBROUTINE CopyFrontTOBack()
+!-----------------------------------------------------------------------------!
+   USE SimulationVars_m, ONLY: imax, jmax, kmax, xp
+   USE SimulationSetup_m, ONLY: UniformSpacing
+
+   IMPLICIT NONE
+   INTEGER :: i, k
+
+   DO i = 2, imax - 1
+      DO k = 2, kmax - 1
+         xp(1,i,jmax,k) = xp(1,i,1,k)
+         xp(2,i,jmax,k) = UniformSpacing(xp(2,i,jmax,1), xp(2,i,jmax,kmax), k, kmax)
+         xp(3,i,jmax,k) = xp(3,i,1,k)
+      ENDDO
+   ENDDO
+
+   END SUBROUTINE CopyFrontTOBack
+
+
+!-----------------------------------------------------------------------------!
+   SUBROUTINE CalculateGridJacobian()
+!-----------------------------------------------------------------------------!
+   USE SimulationVars_m, ONLY: imax, jmax, kmax, xp, inverseJacobian
+
+   IMPLICIT NONE
+   INTEGER :: i, j, k
+   ! xgst, ygst, zgst: arbitrary ghost cell points
+   REAL(KIND=wp) :: x_i, y_i, z_i, x_j, y_j, z_j, x_k, y_k, z_k, &
+                    xgst, ygst, zgst
+
+   DO i = 1, imax 
+      DO j = 1, jmax
+         DO k = 1, kmax
+            ! calculate x_i, y_i, z_i
+            IF ( i == 1 ) THEN
+               xgst = xp(1,i,j,k) - (xp(1,i+1,j,k) - xp(1,i,j,k))
+               ygst = xp(2,i,j,k) - (xp(2,i+1,j,k) - xp(2,i,j,k))
+               zgst = xp(3,i,j,k) - (xp(3,i+1,j,k) - xp(3,i,j,k))
+               x_i = 0.5_wp * (xp(1,i+1,j,k) - xgst)
+               y_i = 0.5_wp * (xp(2,i+1,j,k) - ygst)
+               z_i = 0.5_wp * (xp(3,i+1,j,k) - zgst)
+            ELSEIF ( i == imax ) THEN
+               xgst = xp(1,i,j,k) + (xp(1,i,j,k) - xp(1,i-1,j,k))
+               ygst = xp(2,i,j,k) + (xp(2,i,j,k) - xp(2,i-1,j,k))
+               zgst = xp(3,i,j,k) + (xp(3,i,j,k) - xp(3,i-1,j,k))
+               x_i = 0.5_wp * (xgst - xp(1,i-1,j,k))
+               y_i = 0.5_wp * (ygst - xp(2,i-1,j,k))
+               z_i = 0.5_wp * (zgst - xp(3,i-1,j,k))
+            ELSE
+               x_i = 0.5_wp * (xp(1,i+1,j,k) - xp(1,i-1,j,k))
+               y_i = 0.5_wp * (xp(2,i+1,j,k) - xp(2,i-1,j,k))
+               z_i = 0.5_wp * (xp(3,i+1,j,k) - xp(3,i-1,j,k))
+            ENDIF
+            ! calculate x_j, y_j, z_j
+            IF ( j == 1 ) THEN
+               xgst = xp(1,i,j,k) - (xp(1,i,j+1,k) - xp(1,i,j,k))
+               ygst = xp(2,i,j,k) - (xp(2,i,j+1,k) - xp(2,i,j,k))
+               zgst = xp(3,i,j,k) - (xp(3,i,j+1,k) - xp(3,i,j,k))
+               x_j = 0.5_wp * (xp(1,i,j+1,k) - xgst)
+               y_j = 0.5_wp * (xp(2,i,j+1,k) - ygst)
+               z_j = 0.5_wp * (xp(3,i,j+1,k) - zgst)
+            ELSEIF ( j == jmax ) THEN
+               xgst = xp(1,i,j,k) + (xp(1,i,j,k) - xp(1,i,j-1,k))
+               ygst = xp(2,i,j,k) + (xp(2,i,j,k) - xp(2,i,j-1,k))
+               zgst = xp(3,i,j,k) + (xp(3,i,j,k) - xp(3,i,j-1,k))
+               x_j = 0.5_wp * (xgst - xp(1,i,j-1,k))
+               y_j = 0.5_wp * (ygst - xp(2,i,j-1,k))
+               z_j = 0.5_wp * (zgst - xp(3,i,j-1,k))
+            ELSE
+               x_j = 0.5_wp * (xp(1,i,j+1,k) - xp(1,i,j-1,k))
+               y_j = 0.5_wp * (xp(2,i,j+1,k) - xp(2,i,j-1,k))
+               z_j = 0.5_wp * (xp(3,i,j+1,k) - xp(3,i,j-1,k))
+            ENDIF
+            ! calculate x_k, y_k, z_k
+            IF ( k == 1 ) THEN
+               xgst = xp(1,i,j,k) - (xp(1,i,j,k+1) - xp(1,i,j,k))
+               ygst = xp(2,i,j,k) - (xp(2,i,j,k+1) - xp(2,i,j,k))
+               zgst = xp(3,i,j,k) - (xp(3,i,j,k+1) - xp(3,i,j,k))
+               x_k = 0.5_wp * (xp(1,i,j,k+1) - xgst)
+               y_k = 0.5_wp * (xp(2,i,j,k+1) - ygst)
+               z_k = 0.5_wp * (xp(3,i,j,k+1) - zgst)
+            ELSEIF ( k == kmax ) THEN
+               xgst = xp(1,i,j,k) + (xp(1,i,j,k) - xp(1,i,j,k-1))
+               ygst = xp(2,i,j,k) + (xp(2,i,j,k) - xp(2,i,j,k-1))
+               zgst = xp(3,i,j,k) + (xp(3,i,j,k) - xp(3,i,j,k-1))
+               x_k = 0.5_wp * (xgst - xp(1,i,j,k-1))
+               y_k = 0.5_wp * (ygst - xp(2,i,j,k-1))
+               z_k = 0.5_wp * (zgst - xp(3,i,j,k-1))
+            ELSE
+               x_k = 0.5_wp * (xp(1,i,j,k+1) - xp(1,i,j,k-1))
+               y_k = 0.5_wp * (xp(2,i,j,k+1) - xp(2,i,j,k-1))
+               z_k = 0.5_wp * (xp(3,i,j,k+1) - xp(3,i,j,k-1))
+            ENDIF
+            ! Calculate 1/J: Inverse of grid Jacobian           
+            inverseJacobian(i,j,k) = x_i * (y_j * z_k - y_k * z_j) - &
+                                     x_j * (y_i * z_k - y_k * z_i) + &
+                                     x_k * (y_i * z_j - y_j * z_i)
+         ENDDO
+      ENDDO
+   ENDDO
+
+   END SUBROUTINE CalculateGridJacobian
+
 
 END MODULE

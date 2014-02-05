@@ -2,8 +2,7 @@
 !> \author: Sayop Kim
 
 PROGRAM main
-   USE SimulationSetup_m, ONLY: InitializeCommunication, &
-                                TESTstateVar
+   USE SimulationSetup_m, ONLY: InitializeCommunication
    USE GridSetup_m, ONLY: InitializeGrid
    USE GridTransform_m, ONLY: GridTransform
    USE io_m, ONLY: WriteTecPlot, filenameLength
@@ -19,6 +18,5 @@ PROGRAM main
    CALL InitializeGrid
    ! Use Elliptic grid points
    CALL GridTransform
-   CALL TESTstateVar
-   CALL WriteTecPlot(outputfile,'"I","J","K","Pi","Psy"')
+   CALL WriteTecPlot(outputfile,'"I","J","K","Jacobian"')
 END PROGRAM main
