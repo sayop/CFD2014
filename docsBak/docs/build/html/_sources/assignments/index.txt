@@ -1,4 +1,0 @@
-Homework Assignments
-====================
-
-Under construction
