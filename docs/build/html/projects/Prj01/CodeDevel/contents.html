@@ -26,7 +26,7 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="CFD2014 0.0.1 documentation" href="../../../index.html" />
     <link rel="up" title="Computer Project #1" href="../index.html" />
-    <link rel="next" title="Results summary" href="../Results/contents.html" />
+    <link rel="next" title="How to run the code" href="../HowToRun/contents.html" />
     <link rel="prev" title="Project description" href="../PrjDescription/contents.html" /> 
   </head>
   <body>
@@ -37,13 +37,12 @@
           <a href="../../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../Results/contents.html" title="Results summary"
+          <a href="../HowToRun/contents.html" title="How to run the code"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../PrjDescription/contents.html" title="Project description"
              accesskey="P">previous</a> |</li>
         <li><a href="../../../index.html">CFD2014 0.0.1 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" >Computer Projects</a> &raquo;</li>
           <li><a href="../index.html" accesskey="U">Computer Project #1</a> &raquo;</li> 
       </ul>
     </div>  
@@ -55,7 +54,126 @@
             
   <div class="section" id="code-development">
 <h1>Code development<a class="headerlink" href="#code-development" title="Permalink to this headline">¶</a></h1>
-<p>Under construction</p>
+<p>The current project is for developing elliptic grid generator in 3-dimensional domain. Hereafter, the program developed in this project is called &#8216;GridGen&#8217;.</p>
+<div class="section" id="gridgen-code-summary">
+<h2>GridGen Code summary<a class="headerlink" href="#gridgen-code-summary" title="Permalink to this headline">¶</a></h2>
+<p>The present project is to make a grid-generator for 3-D computational domain around a modified NACA 00xx series airfoil in a channel. The assigned project is inherently aimed at 2-D grid. However, the currently built GridGen code has a capability of 3-D grid generation.</p>
+<p>The source code contains two directories, &#8216;io&#8217;, and &#8216;main&#8217;, for input/output related sources and grid-setup related sources, respectively. &#8216;CMakeLists.txt&#8217; file is also included for cmake compiling.</p>
+<div class="highlight-python"><pre>$ cd GridGen/CODEdev/src/
+$ ls
+$ CMakeLists.txt  io  main</pre>
+</div>
+<p>The <strong>io</strong> folder has <strong>io.F90</strong> file which contains <strong>ReadGridInput()</strong> and <strong>WriteTecPlot()</strong> subroutines. It also includes <strong>input</strong> directory which contains default <strong>input.dat</strong> file.</p>
+<p>The <strong>main</strong> folder is only used for containing grid-setup related source files. The main routine is run by <strong>main.F90</strong> which calls important subroutines from <strong>main</strong> folder itself and <strong>io</strong> folder when needed. All the fortran source files <strong>main</strong> folder contains are listed below:</p>
+<div class="highlight-python"><pre>&gt; GridSetup.F90
+&gt; GridTransform.F90
+&gt; GridTransformSetup.F90
+&gt; main.F90
+&gt; Parameters.F90
+&gt; SimulationSetup.F90
+&gt; SimulationVars.F90</pre>
+</div>
+</div>
+<div class="section" id="details-of-gridgen-development">
+<h2>Details of GridGen development<a class="headerlink" href="#details-of-gridgen-development" title="Permalink to this headline">¶</a></h2>
+<p>The GridGen code is made for creating 3-D computational domain with pre-described points value along the 2D airfoil geometry. The schematic below shows the flow chart of how the GridGen code runs.</p>
+<a class="reference internal image-reference" href="../../../_images/GridGenFlowChart.png"><img alt="../../../_images/GridGenFlowChart.png" src="../../../_images/GridGenFlowChart.png" style="width: 487.2px; height: 458.4px;" /></a>
+<p>The source code shown below is <strong>main.F90</strong> and it calls skeletal subroutines for generating grid structure. The main features of the main code is to (1) read input file, (2) make initialized variable arrays, (3) set initial algebraic grid points, (4) create elliptic grid points, and (5) finally write output files:</p>
+<div class="highlight-python"><pre>PROGRAM main
+   USE SimulationSetup_m, ONLY: InitializeCommunication
+   USE GridSetup_m, ONLY: InitializeGrid
+   USE GridTransform_m, ONLY: GridTransform
+   USE io_m, ONLY: WriteTecPlot, filenameLength
+   USE Parameters_m, ONLY: wp
+
+   IMPLICIT NONE
+
+   CHARACTER(LEN=filenameLength) :: outputfile = 'output.tec'
+
+   CALL InitializeCommunication
+   ! Make initial condition for grid point alignment
+   ! Using Algebraic method
+   CALL InitializeGrid
+   ! Use Elliptic grid points
+   CALL GridTransform
+   CALL WriteTecPlot(outputfile,'"I","J","K","Jacobian"')
+END PROGRAM main</pre>
+</div>
+<div class="section" id="creation-of-algebraic-grid-points">
+<h3>Creation of algebraic grid points<a class="headerlink" href="#creation-of-algebraic-grid-points" title="Permalink to this headline">¶</a></h3>
+<p>The code starts to run by reading the important input parameters defined in <strong>input.dat</strong> file. The input data file first contains the number of i, j, k directional grid points. Then the code reads airfoil geometry data from this input file, which provides the bottom edge points of the domain. The input file also contains four vertex points in <span class="math">\((x,y,z)\)</span> coordinates. Thus those points forms a 2-dimensional surface, which is supposed to be created in this project. Next, the code clones these grid points and locates them away from this surface in <span class="math">\(j\)</span>-direction, resulting in 3-dimensional computational domain. Based on these boundary grid points, the code runs with Algebratic grid generating subroutine and gives initial conditions for elliptic solution for grid transformation.</p>
+<p>The <strong>main.F90</strong> file first refers to <strong>InitializeGrid</strong> subroutine defined in <strong>GridSetup.F90</strong> file. The main function of this routine is to call again multiple subroutines defined in same file. The subroutine definition shown below summarizes the how the code runs for the grid initialization:</p>
+<div class="highlight-python"><pre>!-----------------------------------------------------------------------------!
+   SUBROUTINE InitializeGrid()
+!-----------------------------------------------------------------------------!
+   USE io_m, ONLY: ReadGridInput
+   USE SimulationVars_m, ONLY: imax, jmax, kmax,&amp;
+                             xblkV, cy
+   IMPLICIT NONE
+
+   ! Create Bottom Edge coordinate values
+   CALL ReadGridInput
+   CALL InitializeGridArrays
+   CALL CreateBottomEdge
+   CALL SetEdgePnts
+   CALL GridPntsAlgbra
+   CALL GenerateInteriorPoints
+
+   END SUBROUTINE</pre>
+</div>
+<ul class="simple">
+<li><strong>ReadGridInput</strong>: Reads important user defined variables and parameters for grid configuration.</li>
+<li><strong>InitializeGridArrays</strong>: Initialize the single- and multi-dimensional arrays and set their size with input parameters(for example, imax, jmax, kmax).</li>
+<li><strong>CreateBottomEdge</strong>: Generate point values for airfoil geometry.</li>
+<li><strong>SetEdgePnts</strong>: Generate grid points along 8 edges of the computational domain.</li>
+<li><strong>GridPntsAlgbra</strong>: Based on the edge points, this routine will distribute grid points located on each 6 surfaces of the computational domain.</li>
+<li><strong>GenerateInteriorPoints</strong>: Based on grid points along the edges and surfaces, this routine will create interior grid points that are aligned with user-defined grid point interpolations.</li>
+</ul>
+</div>
+<div class="section" id="creaction-of-elliptic-grid-points">
+<h3>Creaction of elliptic grid points<a class="headerlink" href="#creaction-of-elliptic-grid-points" title="Permalink to this headline">¶</a></h3>
+<p>In order to determine the elliptic grid points with the pre-specified boundary points, the following Poisson equations, which is given in previous <strong>Project description</strong> section, have to be resolved numerically. The coefficients of the equations can be determined by:</p>
+<div class="math">
+\[A_{1}=x_{\eta}^{2} + y_{\eta}^{2}\]\[A_{2}=x_{\xi}x_{\eta} + y_{\xi}y_{\eta}\]\[A_{3}=x_{\xi}^{2} + y_{\xi}^{2}\]</div>
+<p>Then, applying finite difference approximation to the governing equations can be transformed into the linear system of equations. The arranged matrix form of equations shown below can be solved for unknown implicitly at every pseudo-time level. At every time loop, the code updates the coefficients composed of <span class="math">\(\phi\)</span> and <span class="math">\(\psi\)</span>, and adjacent points. The detailed relations of each coefficients are not shown here for brevity.</p>
+<div class="math">
+\[a_{i,j} x_{i-1,j}^{n+1} + b_{i,j} x_{i,j}^{n+1} + c_{i,j} x_{i+1,j}^{n+1} = d_{i,j}\]\[e_{i,j} y_{i-1,j}^{n+1} + f_{i,j} y_{i,j}^{n+1} + g_{i,j} y_{i+1,j}^{n+1} = h_{i,j}\]</div>
+<p>Above equations can be numerically evaluated by the following descritized expressions:</p>
+<div class="math">
+\[a_{i,j} = e_{i,j} = A_{1\text{ }i,j}^{n}  \left(1 - \frac{\phi_{i,j}^{n}}{2} \right)\]\[b_{i,j} = f_{i,j} = -2 \left(A_{1\text{ }i,j} + A_{3\text{ }i,j} \right)\]\[c_{i,j} = g_{i,j} = A_{1\text{ }i,j}^{n}  \left(1 + \frac{\phi_{i,j}^{n}}{2} \right)\]\[e_{i,j} = \frac{A_{2\text{ }i,j}^{n}}{2} \left(x_{i+1,j}^{n} - x_{i+1,j-1}^{n+1} - x_{i-1,j+1}^{n} - x_{i-1,j-1}^{n+1} \right) - A_{3\text{ }i,j}^{n} \left( x_{i,j+1}^{n} + x_{i,j-1}^{n+1} \right) - \frac{A_{2\text{ }i,j}^{n}}{2} \psi_{i,j}^{n} \left( x_{i,j+1}^{n} - x_{i,j-1}^{n+1} \right)\]\[h_{i,j} = \frac{A_{2\text{ }i,j}^{n}}{2} \left(y_{i+1,j}^{n} - y_{i+1,j-1}^{n+1} - y_{i-1,j+1}^{n} - y_{i-1,j-1}^{n+1} \right) - A_{3\text{ }i,j}^{n} \left( y_{i,j+1}^{n} + y_{i,j-1}^{n+1} \right) - \frac{A_{2\text{ }i,j}^{n}}{2} \psi_{i,j}^{n} \left( y_{i,j+1}^{n} - y_{i,j-1}^{n+1} \right)\]</div>
+<p>where <span class="math">\(n\)</span> and <span class="math">\(n+1\)</span> indicate pseudo time index. Thus above equations will update grid point coordinates for <span class="math">\(n+1\)</span> time level by referring to already resolved <span class="math">\(n\)</span> time level solution. Note that the pseudo time looping goes along the successive <span class="math">\(j\)</span>-constant lines. Therefore, when writing the code, time level index in above equations was not considered as a separate program variable because <span class="math">\(j-1\)</span> constant line is already updated in the previous loop.</p>
+<p>The expressions above are only evaluted in the interior grid points. The points on the boundaries are evaluated seprately by applying given solutions as problem handout.</p>
+<p>Once initial algebraic grid points are created, the code is ready to make elliptic grid points with some control terms in terms of <span class="math">\(\phi\)</span> and <span class="math">\(\psi\)</span>. <strong>GridTransform.F90</strong> file contains a subroutine named by <strong>GridTransform</strong> as shown below:</p>
+<div class="highlight-python"><pre>!-----------------------------------------------------------------------------!
+   SUBROUTINE GridTransform()
+!-----------------------------------------------------------------------------!
+   IMPLICIT NONE
+   INTEGER :: n
+
+   CALL InitializeArrays
+   IF ( iControl == 1) CALL CalculatePiPsi
+   DO n = 1, nmax
+      CALL CalculateA123
+      CALL ThomasLoop
+      CALL WriteRMSlog(n,RMSlogfile)
+      IF (RMSres &lt;= RMScrit) EXIT
+   ENDDO
+   CALL CopyFrontTOBack
+   CALL GenerateInteriorPoints
+   CALL CalculateGridJacobian
+   END SUBROUTINE GridTransform</pre>
+</div>
+<p>Before going into the main loop for solving poisson equations, the code calculate control terms with <span class="math">\(\phi\)</span> and <span class="math">\(\psi\)</span>. Even though the assigned project made an assumption of linear interpolated distribution of <span class="math">\(\phi\)</span> and <span class="math">\(\psi\)</span> at interior points, the GridGen code is designed to allow <span class="math">\(\phi\)</span> and <span class="math">\(\psi\)</span> be weighted in <span class="math">\(j\)</span> and <span class="math">\(i\)</span> directions, respectively. This effect is made by the grid stretching formula. This will be revisited for discussion on <strong>Grid 5</strong>.</p>
+<p>Here, main DO-loop routine goes with setup of coefficients of governing equations and Thomas loop. The Thomas loop operates with line Gauss-Siedel method for resolving unknown variables, <span class="math">\(x\)</span> and <span class="math">\(y\)</span>, with tri-diagonal matrix of coefficients of finite difference approximation equation in a <span class="math">\(k\)</span> = constant line. Note that the GridGen code transforms the grid points with elliptic solution only in front surface, then clones the grid points to the back surface and finally creates interior points. The front surface is made up of <span class="math">\(i\)</span> and <span class="math">\(k\)</span> coordinates.</p>
+</div>
+<div class="section" id="write-convergence-history-rms-residual">
+<h3>Write Convergence history: RMS residual<a class="headerlink" href="#write-convergence-history-rms-residual" title="Permalink to this headline">¶</a></h3>
+<p>In order to avoid infinite time-looping for the Thomas method, the GridGen code employs the following definition of RMS residual based on the new (<span class="math">\(n+1\)</span>) and old(<span class="math">\(n\)</span>) values of grid point coordinates.</p>
+<div class="math">
+\[\text{RMS}^{n} = \sqrt{\frac{1}{N} \sum_{i=2}^{imax-1} \sum_{jmax-1}^{j=2} \left[\left(x_{i,j}^{n+1} - x_{i,j}^{n} \right)^{2} + \left(y_{i,j}^{n+1} - y_{i,j}^{n} \right)^{2} \right]}\]</div>
+<p>where <span class="math">\(N = 2x(\text{imax}-2) x (\text{jmax}-2)\)</span> and the RMS criterion is pre-specified as: <span class="math">\(1\text{x}10^{-6}\)</span>. In this code, the convergend is assumed to be achived when RMS residual is less than the RMS criterion.</p>
+</div>
+</div>
 </div>
 
 
@@ -64,12 +182,26 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Code development</a><ul>
+<li><a class="reference internal" href="#gridgen-code-summary">GridGen Code summary</a></li>
+<li><a class="reference internal" href="#details-of-gridgen-development">Details of GridGen development</a><ul>
+<li><a class="reference internal" href="#creation-of-algebraic-grid-points">Creation of algebraic grid points</a></li>
+<li><a class="reference internal" href="#creaction-of-elliptic-grid-points">Creaction of elliptic grid points</a></li>
+<li><a class="reference internal" href="#write-convergence-history-rms-residual">Write Convergence history: RMS residual</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="../PrjDescription/contents.html"
                         title="previous chapter">Project description</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../Results/contents.html"
-                        title="next chapter">Results summary</a></p>
+  <p class="topless"><a href="../HowToRun/contents.html"
+                        title="next chapter">How to run the code</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../../../_sources/projects/Prj01/CodeDevel/contents.txt"
@@ -99,13 +231,12 @@
           <a href="../../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../Results/contents.html" title="Results summary"
+          <a href="../HowToRun/contents.html" title="How to run the code"
              >next</a> |</li>
         <li class="right" >
           <a href="../PrjDescription/contents.html" title="Project description"
              >previous</a> |</li>
         <li><a href="../../../index.html">CFD2014 0.0.1 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" >Computer Projects</a> &raquo;</li>
           <li><a href="../index.html" >Computer Project #1</a> &raquo;</li> 
       </ul>
     </div>

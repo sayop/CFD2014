@@ -8,6 +8,5 @@ The current computer project is assigned as shown in the pdf linked :download:`h
 
    PrjDescription/contents
    CodeDevel/contents
+   HowToRun/contents
    Results/contents
-   Discussions/contents
-
