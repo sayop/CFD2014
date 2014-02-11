@@ -1,9 +1,3 @@
-Introduction
-============
-
-Under construction
-
-
 Computational Grids
 ===================
 

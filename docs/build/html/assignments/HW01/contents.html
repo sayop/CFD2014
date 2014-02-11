@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Homework Assignment #1 &mdash; CFD2014 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="CFD2014 0.0.1 documentation" href="../../index.html" />
+    <link rel="next" title="Homework Assignment #2" href="../HW02/contents.html" />
+    <link rel="prev" title="Computational Grids" href="../../materials/grids/index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../HW02/contents.html" title="Homework Assignment #2"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../materials/grids/index.html" title="Computational Grids"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">CFD2014 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="homework-assignment-1">
+<h1>Homework Assignment #1<a class="headerlink" href="#homework-assignment-1" title="Permalink to this headline">¶</a></h1>
+<p>Homework assignment can be downloaed from <a class="reference download internal" href="../../_downloads/HW_1.pdf"><tt class="xref download docutils literal"><span class="pre">here</span></tt></a></p>
+<div class="section" id="problem-1">
+<h2>Problem #1<a class="headerlink" href="#problem-1" title="Permalink to this headline">¶</a></h2>
+<p>Consider <span class="math">\(M_{\infty }\)</span> = 2.0 flow of air around the 15% thick diamond airfoil shown. Is the Full Potential Equation valid at any location in the surrouding flow? Fully explain your answer.</p>
+<a class="reference internal image-reference" href="../../_images/HW1_pr1.png"><img alt="../../_images/HW1_pr1.png" src="../../_images/HW1_pr1.png" style="width: 50%;" /></a>
+</div>
+<div class="section" id="problem-2">
+<h2>Problem #2<a class="headerlink" href="#problem-2" title="Permalink to this headline">¶</a></h2>
+<p>The Thompson scheme for generating grids is based on equations 10.21 and 10.22 in the textbook. Starting from the following equations used to define the grid:</p>
+<div class="math">
+\[\triangledown ^{2}x = 0\]\[\triangledown ^{2}y = 0\]</div>
+<p>Derive equations 10.22. In your derivation of equations 10.22, you will need to use equations 10.21 which define the control terms P and Q.</p>
+</div>
+<div class="section" id="problem-3">
+<h2>Problem #3<a class="headerlink" href="#problem-3" title="Permalink to this headline">¶</a></h2>
+<p>Show that for the parallelogram-shaped grid cell enclosed by <span class="math">\(\overline{ac}\)</span> and <span class="math">\(\overline{ab}\)</span> the cell area is equal to <span class="math">\(\frac{1}{J}\)</span> for the 2-D generalized transformation (assume <span class="math">\(\Delta \xi = \Delta \eta = 1\)</span>).</p>
+<a class="reference internal image-reference" href="../../_images/HW1_pr3.png"><img alt="../../_images/HW1_pr3.png" src="../../_images/HW1_pr3.png" style="width: 50%;" /></a>
+</div>
+<div class="section" id="problem-4">
+<h2>Problem #4<a class="headerlink" href="#problem-4" title="Permalink to this headline">¶</a></h2>
+<p>In class it was mentioned that the inverse metrics (e.g. <span class="math">\(x_{\xi}\)</span>, <span class="math">\(x_{\eta}\)</span>, :math: <cite>y_{xi}</cite>, <span class="math">\(y_{\eta}\)</span>) could be obtained from finite difference approximations for these derivatives. For example, if we want to find <span class="math">\(x_{\xi}\)</span> at point b in the grid we can use:</p>
+<div class="math">
+\[\left ( x_{\xi} \right )_{b} = \left ( \frac{\partial x}{\partial \xi} \right )_{b} \approx \frac{x_{c} - x_{a}}{\xi_{c} - \xi_{a}}\]</div>
+<a class="reference internal image-reference" href="../../_images/HW1_pr4.png"><img alt="../../_images/HW1_pr4.png" src="../../_images/HW1_pr4.png" style="width: 50%;" /></a>
+<p>However, we do not use finite difference approximations to find the grid metrics (e.g. <span class="math">\(\xi_{x}\)</span>, <span class="math">\(\xi_{y}\)</span>, <span class="math">\(\eta_{x}\)</span>, <span class="math">\(\eta_{y}\)</span>). Explain why we do not use approximations like:</p>
+<div class="math">
+\[\left ( \xi_{x} \right )_{b} = \left ( \frac{\partial \xi}{\partial x} \right )_{b} \approx \frac{\xi_{c} - \xi_{a}}{x_{c} - x_{a}}\]</div>
+<p>to obtain the grid metrics.</p>
+</div>
+<div class="section" id="problem-5">
+<h2>Problem #5<a class="headerlink" href="#problem-5" title="Permalink to this headline">¶</a></h2>
+<p>Complete Problem 5.37 in the textbook.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Homework Assignment #1</a><ul>
+<li><a class="reference internal" href="#problem-1">Problem #1</a></li>
+<li><a class="reference internal" href="#problem-2">Problem #2</a></li>
+<li><a class="reference internal" href="#problem-3">Problem #3</a></li>
+<li><a class="reference internal" href="#problem-4">Problem #4</a></li>
+<li><a class="reference internal" href="#problem-5">Problem #5</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../../materials/grids/index.html"
+                        title="previous chapter">Computational Grids</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../HW02/contents.html"
+                        title="next chapter">Homework Assignment #2</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/assignments/HW01/contents.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../HW02/contents.html" title="Homework Assignment #2"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../materials/grids/index.html" title="Computational Grids"
+             >previous</a> |</li>
+        <li><a href="../../index.html">CFD2014 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Sayop Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

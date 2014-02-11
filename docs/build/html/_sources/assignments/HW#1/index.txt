@@ -1,0 +1,10 @@
+Homework Assignment #1
+======================
+
+Problem #1
+----------
+
+Consider :math:`M_{\infty }` = 2.0 flow of air around the 15% thick diamond airfoil shown. Is the Full Potential Equation valid at any location in the surrouding flow? Fully explain your answer.
+
+.. image:: ./images/HW1_pr1.png
+   :width: 70%

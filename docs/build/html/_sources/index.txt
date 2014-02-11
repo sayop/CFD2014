@@ -16,7 +16,8 @@ Lecture Materials
 .. toctree::
    :maxdepth: 2
 
-   materials/index
+   materials/intro/index
+   materials/grids/index
 
 Homework Assignments
 ====================
@@ -24,7 +25,8 @@ Homework Assignments
 .. toctree::
    :maxdepth: 2
 
-   assignments/index
+   assignments/HW01/contents
+   assignments/HW02/contents
 
 
 Computer Projects
