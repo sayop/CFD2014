@@ -1,5 +1,5 @@
 Project description
-===================
+-------------------
 
 
 In this exercise you will generate an inviscid, 2-D computational grid around a modified NACA 00xx series airfoil in a channel. The thickness distribution of a modified NACA 00xx series airfoil is given by:

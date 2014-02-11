@@ -1,4 +1,0 @@
-Results summary
-===============
-
-Under construction

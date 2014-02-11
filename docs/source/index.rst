@@ -10,16 +10,42 @@ This documentation pages are made for CFD class at Geogia Tech in 2014 Spring.
 
 Author: Sayop Kim(sayopkim@gatech.edu)
 
-Contents:
-=========
+Lecture Materials
+=================
 
 .. toctree::
    :maxdepth: 2
 
-   intro/index
+   materials/index
+
+Homework Assignments
+====================
+
+.. toctree::
+   :maxdepth: 2
+
    assignments/index
-   projects/index
+
+
+Computer Projects
+=================
+
+.. toctree::
+   :maxdepth: 2
+
+   projects/Prj01/index
+   projects/Prj02/index
+   projects/Prj03/index
+   projects/Prj04/index
+
+References
+==========
+
+.. toctree::
+   :maxdepth: 2
+
    references/index
+
 
 Indices and tables
 ==================
